@@ -1,5 +1,5 @@
 import axiosInstance from "@/lib/axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
@@ -23,17 +23,23 @@ interface DeleteItemProps {
 }
 
 const Delete: React.FC<DeleteItemProps> = ({ item, id }) => {
-  const { mutate: deleteItem } = useMutation({
+  const queryClient = useQueryClient();
+  const itemType = item === "products" ? "products" : "collections";
+
+  const { mutate: deleteItem, isPending } = useMutation({
     mutationKey: ["delete"],
     mutationFn: async () => {
-      const itemType = item === "products" ? "products" : "collections";
-
       const res = await axiosInstance.delete(`/api/${itemType}/${id}`);
 
       if (res.status !== 400) {
         toast.success(`${item} deleted`);
-        redirect(`/${itemType}`);
       }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [itemType],
+      });
+      redirect(`/${itemType}`);
     },
   });
 
@@ -58,6 +64,7 @@ const Delete: React.FC<DeleteItemProps> = ({ item, id }) => {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => deleteItem()}
+            disabled={isPending}
             className="bg-red-1 text-white"
           >
             Delete

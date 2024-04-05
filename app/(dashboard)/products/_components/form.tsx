@@ -25,6 +25,7 @@ import ImageUpload from "./image-upload";
 import { Button } from "@/components/ui/button";
 import MultiText from "./multi-text";
 import MultiSelect from "./multi-select";
+import { unstable_noStore as noStore } from 'next/cache';
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -44,6 +45,7 @@ interface ProductFormProps {
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
+  noStore()
   const router = useRouter();
 
   const { data: collections } = useQuery({
@@ -90,10 +92,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
     }
   };
 
-  const { mutate: createProduct } = useMutation({
+  const { mutate: createProduct, isPending } = useMutation({
     mutationKey: ["create-product"],
     mutationFn: async (data: z.infer<typeof formSchema>) => {
-      const res = await axiosInstance.post("/api/products", data);
+      const res = await axiosInstance.post(
+        initialData ? `/api/products/${initialData._id}` : "/api/products",
+        data
+      );
 
       return res.data;
     },
@@ -105,8 +110,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         toast.success(`Product ${initialData ? "updated" : "created"}`);
         router.push("/products");
       },
-      onError: () => {
+      onError: (error) => {
         toast.error(`Something went wrong! Please try again!`);
+        console.error(error);
       },
     });
   };
@@ -155,7 +161,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                     placeholder="Description"
                     {...field}
                     rows={5}
-                    onKeyDown={handleKeyPress}
+                    // onKeyDown={handleKeyPress}
                   />
                 </FormControl>
                 <FormMessage className="text-red-1" />
@@ -344,8 +350,12 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
           </div>
 
           <div className="flex gap-10">
-            <Button type="submit" className="bg-blue-1 text-white">
-              Submit
+            <Button
+              type="submit"
+              className="bg-blue-1 text-white"
+              disabled={isPending}
+            >
+              {initialData ? "Save" : "Submit"}
             </Button>
             <Button
               type="button"

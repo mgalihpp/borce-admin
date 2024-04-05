@@ -15,12 +15,6 @@ interface ImageUploadProps {
   onRemove: (value: string) => void;
 }
 
-type UploadResponse = {
-  info: {
-    secure_url: string;
-  };
-};
-
 const ImageUpload: React.FC<ImageUploadProps> = ({
   value,
   onChange,
