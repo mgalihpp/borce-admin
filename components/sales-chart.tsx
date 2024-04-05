@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 
@@ -11,6 +11,12 @@ import {
   Tooltip,
   YAxis,
 } from "recharts";
+
+const error = console.error;
+console.error = (...args: any) => {
+  if (/defaultProps/.test(args[0])) return;
+  error(...args);
+};
 
 const SalesChart = ({
   data,
@@ -29,8 +35,8 @@ const SalesChart = ({
       >
         <Line type="monotone" dataKey="sales" stroke="#8884d8" />
         <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-        <XAxis dataKey='name'/>
-        <YAxis/>
+        <XAxis dataKey="name" />
+        <YAxis />
         <Tooltip />
       </LineChart>
     </ResponsiveContainer>

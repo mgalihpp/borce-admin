@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const collectionSchema = new mongoose.Schema({
   title: {
@@ -27,7 +27,10 @@ const collectionSchema = new mongoose.Schema({
   },
 });
 
-const Collection =
-  mongoose.models.Collection || mongoose.model("Collection", collectionSchema);
+type TCollection = InferSchemaType<typeof collectionSchema>;
+
+const Collection: mongoose.Model<TCollection> =
+  mongoose.models.Collection ||
+  mongoose.model<TCollection>("Collection", collectionSchema);
 
 export default Collection;

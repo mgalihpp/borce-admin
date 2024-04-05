@@ -4,6 +4,8 @@ import "../globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Sidebar from "@/components/sidebar";
 import TopBar from "@/components/topbar";
+import QueryProvider from "@/providers/QueryClientProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +26,10 @@ export default function RootLayout({
           <div className="flex max-lg:flex-col text-grey-1">
             <Sidebar />
             <TopBar />
-            <div className="flex-1">{children}</div>
+            <div className="flex-1">
+              <QueryProvider>{children}</QueryProvider>
+              <Toaster />
+            </div>
           </div>
         </body>
       </html>
