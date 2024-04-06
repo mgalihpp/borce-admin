@@ -4,12 +4,17 @@ import { buttonVariants } from "./ui/button";
 import { Pencil } from "lucide-react";
 
 interface EditItemProps {
-  item: "products" | "collections";
+  item: "products" | "collections" | "orders";
   id: string;
 }
 
 const Edit: React.FC<EditItemProps> = ({ item, id }) => {
-  const itemType = item === "products" ? "products" : "collections";
+  const itemType =
+    item === "products"
+      ? "products"
+      : item === "collections"
+      ? "collections"
+      : "orders";
 
   return (
     <Link
