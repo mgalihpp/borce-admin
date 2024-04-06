@@ -38,7 +38,7 @@ type CollectionType = {
   }
   
   type CustomerType = {
-    clerkId: string;
-    name: string;
-    email: string;
+    customerId?: string | null | undefined;
+    name?: string | null | undefined;
+    email?: string | null | undefined;
   }
