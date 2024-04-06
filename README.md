@@ -1,3 +1,10 @@
+# PREVIEW
+
+<p align='center'>
+    <img src='./docs/prev1.png' alt='preview'>
+    <img src='./docs/prev2.png' alt='preview'>
+</p>
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
