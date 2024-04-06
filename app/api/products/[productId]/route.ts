@@ -82,44 +82,44 @@ export async function POST(
       });
     }
 
-    const addedCollections = collections.filter((collection) => {
-      // Check if any collection in product.collections has the same _id as collectionId
-      return !product.collections.some((coll) =>
-        coll._id.equals(collection._id)
-      );
-    });
-    // included in new data, but not included in the previous data
+    // const addedCollections = collections.filter((collection) => {
+    //   // Check if any collection in product.collections has the same _id as collectionId
+    //   return !product.collections.some((coll) =>
+    //     coll._id.equals(collection._id)
+    //   );
+    // });
+    // // included in new data, but not included in the previous data
 
-    const removeCollections = product.collections.filter(
-      (collection) =>
-        !collections.some((coll) => coll._id === collection._id.toString())
-    );
-    // included in previous data, but not included in the new data
+    // const removeCollections = product.collections.filter(
+    //   (collection) =>
+    //     !collections.some((coll) => coll._id === collection._id.toString())
+    // );
+    // // included in previous data, but not included in the new data
 
-    // update collections
+    // // update collections
 
-    await Promise.all([
-      //update added collections with this current product
-      ...addedCollections.map((collection) =>
-        Collection.findByIdAndUpdate(collection, {
-          $push: {
-            products: {
-              product,
-            },
-          },
-        })
-      ),
-      // Update removed collections without this product
-      ...removeCollections.map((collection) =>
-        Collection.findByIdAndUpdate(collection, {
-          $pull: {
-            products: {
-              product,
-            },
-          },
-        })
-      ),
-    ]);
+    // await Promise.all([
+    //   //update added collections with this current product
+    //   ...addedCollections.map((collection) =>
+    //     Collection.findByIdAndUpdate(collection, {
+    //       $push: {
+    //         products: {
+    //           product,
+    //         },
+    //       },
+    //     })
+    //   ),
+    //   // Update removed collections without this product
+    //   ...removeCollections.map((collection) =>
+    //     Collection.findByIdAndUpdate(collection, {
+    //       $pull: {
+    //         products: {
+    //           product,
+    //         },
+    //       },
+    //     })
+    //   ),
+    // ]);
 
     // update product
 
@@ -151,8 +151,19 @@ export async function POST(
         { status: 400 }
       );
     }
-
+    
     await updatedProduct.save();
+
+    // Step 2: Update the Collection documents with references to the updated Product
+    for (const collectionId of collections) {
+      const collection = await Collection.findById(collectionId);
+      if (collection) {
+        if (!collection.products.includes(updatedProduct._id)) {
+          collection.products.push(updatedProduct._id);
+          await collection.save();
+        }
+      }
+    }
 
     return NextResponse.json(updatedProduct, { status: 200 });
   } catch (error) {

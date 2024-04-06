@@ -7,6 +7,7 @@ import { buttonVariants } from "@/components/ui/button";
 import axiosInstance from "@/lib/axios";
 import { Separator } from "@radix-ui/react-separator";
 import { useQuery } from "@tanstack/react-query";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -32,6 +33,7 @@ const ProductPage = () => {
           })}
           href="/products/new"
         >
+          <Plus className="size-4 mr-2" />
           New Product
         </Link>
       </div>

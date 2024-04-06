@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import Delete from "../delete-item";
+import Edit from "../edit-item";
 
 export const columns: ColumnDef<ProductType>[] = [
   {
@@ -19,8 +20,18 @@ export const columns: ColumnDef<ProductType>[] = [
   {
     accessorKey: "collections",
     header: "Collections",
-    cell: ({ row }) =>
-      row.original.collections.map((collection) => collection.title).join(", "),
+    cell: ({ row }) => {
+      const collectionsString = row.original.collections
+        .map((collection) => collection.title)
+        .join(", ");
+
+      const truncatedCollections =
+        collectionsString.length > 20
+          ? collectionsString.slice(0, 20) + "..."
+          : collectionsString;
+
+      return truncatedCollections;
+    },
   },
   {
     accessorKey: "price",
@@ -32,6 +43,12 @@ export const columns: ColumnDef<ProductType>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <Delete item="products" id={row.original._id} />,
+    header: "Actions",
+    cell: ({ row }) => (
+      <div className="space-x-2 flex items-center justify-center">
+        <Edit item="products" id={row.original._id} />
+        <Delete item="products" id={row.original._id} />
+      </div>
+    ),
   },
 ];

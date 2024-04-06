@@ -81,6 +81,7 @@ const config: Config = {
         "blue-2": "#E9F5FE",
         "blue-3": "#F5F7F9",
         "red-1": "#FF0000",
+        "green-1": "rgb(34 197 94)",
       },
     },
   },

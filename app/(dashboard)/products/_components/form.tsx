@@ -2,7 +2,7 @@
 
 import React from "react";
 import axiosInstance from "@/lib/axios";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -21,11 +21,25 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import ImageUpload from "./image-upload";
+import ImageUpload from "../../../../components/image-upload";
 import { Button } from "@/components/ui/button";
 import MultiText from "./multi-text";
-import MultiSelect from "./multi-select";
-import { unstable_noStore as noStore } from 'next/cache';
+import MultiSelect, { Option } from "./multi-select";
+import { unstable_noStore as noStore } from "next/cache";
+
+const OPTIONS: Option[] = [
+  { label: "nextjs", value: "nextjs" },
+  { label: "React", value: "react" },
+  { label: "Remix", value: "remix" },
+  { label: "Vite", value: "vite" },
+  { label: "Nuxt", value: "nuxt" },
+  { label: "Vue", value: "vue" },
+  { label: "Svelte", value: "svelte" },
+  { label: "Angular", value: "angular" },
+  { label: "Ember", value: "ember", disable: true },
+  { label: "Gatsby", value: "gatsby", disable: true },
+  { label: "Astro", value: "astro" },
+];
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -45,8 +59,17 @@ interface ProductFormProps {
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
-  noStore()
+  noStore();
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const [selectedValues, setSelectedValues] = React.useState(
+    initialData
+      ? initialData.collections.map(({ title, _id }) => ({
+          label: title,
+          value: _id,
+        }))
+      : []
+  );
 
   const { data: collections } = useQuery({
     queryKey: ["collections"],
@@ -108,6 +131,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
     createProduct(input, {
       onSuccess: () => {
         toast.success(`Product ${initialData ? "updated" : "created"}`);
+        queryClient.invalidateQueries({
+          queryKey: ["products"],
+        });
         router.push("/products");
       },
       onError: (error) => {
@@ -276,18 +302,36 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                     <FormControl>
                       <MultiSelect
                         placeholder="Collections"
-                        collections={collections}
-                        value={field.value}
-                        onChange={(collection) =>
-                          field.onChange([...field.value, collection])
-                        }
-                        onRemove={(collToRemove) =>
-                          field.onChange([
-                            ...field.value.filter(
-                              (collection) => collection !== collToRemove
+                        defaultOptions={collections.map(({ title, _id }) => ({
+                          label: title,
+                          value: _id,
+                        }))}
+                        value={selectedValues}
+                        badgeClassName="bg-grey-1 text-white"
+                        onChange={(newValue) => {
+                          // Identify newly selected values
+                          const newSelectedValues = newValue.filter(
+                            (option) => !selectedValues.includes(option)
+                          );
+
+                          // Identify deselected values
+                          const deselectedValues = selectedValues.filter(
+                            (option) => !newValue.includes(option)
+                          );
+
+                          // Update the state with the newly selected values and remove any deselected values
+                          setSelectedValues((prevSelectedValues) => [
+                            ...prevSelectedValues.filter(
+                              (option) => !deselectedValues.includes(option)
                             ),
-                          ])
-                        }
+                            ...newSelectedValues,
+                          ]);
+
+                          form.setValue(
+                            "collections",
+                            newValue.map((option) => option.value)
+                          );
+                        }}
                       />
                     </FormControl>
                     <FormMessage className="text-red-1" />
