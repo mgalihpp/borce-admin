@@ -26,16 +26,21 @@ export async function POST(req: NextRequest) {
     }
 
     const isLiked = user.wishlist.includes(productId);
+    let responseType: "unliked" | "liked" | string = "";
 
     if (isLiked) {
       user.wishlist = user.wishlist.filter((id: string) => id !== productId);
+      responseType = "unliked";
     } else {
       user.wishlist.push(productId);
+      responseType = "liked";
     }
 
     await user.save();
 
-    return NextResponse.json(user, { status: 200 });
+    const data = { ...user, responseType };
+
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "Internal Server Error" },

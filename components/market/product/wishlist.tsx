@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface WistListProps {
   product: ProductType;
@@ -38,7 +39,11 @@ const Wishlist: React.FC<WistListProps> = ({ product, updateSignedInUser }) => {
   const { mutate: createLike } = useMutation({
     mutationKey: ["wishlist"],
     mutationFn: async (data: string) => {
-      const { data: like } = await axiosInstance.post<UserType>(
+      interface WishlistResponse extends UserType {
+        responseType: "unliked" | "liked";
+      }
+
+      const { data: like } = await axiosInstance.post<WishlistResponse>(
         "/api/users/wishlist",
         data
       );
@@ -56,8 +61,16 @@ const Wishlist: React.FC<WistListProps> = ({ product, updateSignedInUser }) => {
     createLike(product._id, {
       onSuccess: (data) => {
         queryClient.invalidateQueries({
+          queryKey: ["user-wishlist"],
+        });
+        queryClient.invalidateQueries({
           queryKey: ["user"],
         });
+        toast.success(
+          data.responseType === "liked"
+            ? "Added to wishlist"
+            : "Remove from wishlist"
+        );
         setIsLiked(data.wishlist.includes(product._id));
         updateSignedInUser && updateSignedInUser(data);
       },

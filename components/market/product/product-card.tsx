@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import Wishlist from "./wishlist";
+import NextImage from "@/components/next-image";
 
 interface ProductCardProps {
   product: ProductType;
@@ -15,7 +15,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div className="w-[230px] flex flex-col px-1 gap-2 hover:scale-105 transition-all duration-300 ease-in-out">
       <Link href={`/products/${product._id}`} className="space-y-2">
-        <Image
+        <NextImage
           src={product.media[0]}
           alt="product"
           width={220}

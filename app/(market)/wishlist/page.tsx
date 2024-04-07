@@ -6,42 +6,31 @@ import axiosInstance from "@/lib/axios";
 import { getProductDetails } from "@/server/actions/product";
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function WishlistPage() {
   const { user } = useUser();
 
   const [wishlist, setWishlist] = useState<ProductType[]>([]);
 
-  const { data: userData, isLoading } = useQuery({
-    queryKey: ["user"],
+  const { isLoading } = useQuery({
+    queryKey: ["user-wishlist"],
     queryFn: async () => {
-      const res = await axiosInstance.get<UserType>("/api/users");
-      const data = res.data;
-      return data;
+      const { data } = await axiosInstance.get<UserType>("/api/users");
+
+      const wishlistProducts = await Promise.all(
+        (data?.wishlist || []).map(async (productId) => {
+          const { product } = await getProductDetails(productId);
+          return product;
+        })
+      );
+
+      setWishlist(wishlistProducts);
+
+      return wishlistProducts;
     },
     enabled: !!user,
   });
-
-  useEffect(() => {
-    const fetchWishlistProducts = async () => {
-      try {
-        const wishlistProducts = await Promise.all(
-          (userData?.wishlist || []).map(async (productId) => {
-            const { product } = await getProductDetails(productId);
-            return product;
-          })
-        );
-
-        setWishlist(wishlistProducts);
-      } catch (error) {
-        console.error("Error fetching wishlist products:", error);
-        // Handle the error as needed
-      }
-    };
-
-    fetchWishlistProducts();
-  }, [userData]);
 
   return isLoading ? (
     <Loader />

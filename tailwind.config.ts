@@ -93,12 +93,20 @@ const config: Config = {
             fontWeight: "500",
           },
         ],
+        "small-normal": [
+          "14px",
+          {
+            lineHeight: "140%",
+            fontWeight: "300",
+          },
+        ],
       },
       colors: {
         "white-1": "#F8F8F8",
         "grey-1": "#616161",
         "grey-2": "#E5E7EB",
         "grey-3": "#8A8A8A",
+        "grey-4": "#F7F7F7",
         "blue-1": "#005EBE",
         "blue-2": "#E9F5FE",
         "blue-3": "#F5F7F9",
@@ -159,6 +167,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide")],
 };
 export default config;
