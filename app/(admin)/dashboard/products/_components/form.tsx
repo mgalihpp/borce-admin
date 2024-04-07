@@ -8,7 +8,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Delete from "@/components/admin/delete-item";
-import Loader from "@/components/admin/loader";
+import Loader from "@/components/loader";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import {

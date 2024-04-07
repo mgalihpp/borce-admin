@@ -3,7 +3,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
-import Loader from "@/components/admin/loader";
+import Loader from "@/components/loader";
 import ProductForm from "../_components/form";
 
 const SingleProductPage = ({ params }: { params: { productId: string } }) => {

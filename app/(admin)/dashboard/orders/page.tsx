@@ -2,7 +2,7 @@
 
 import { columns } from "@/components/admin/column/order";
 import { DataTable } from "@/components/admin/data-table";
-import Loader from "@/components/admin/loader";
+import Loader from "@/components/loader";
 import { Separator } from "@/components/ui/separator";
 import axiosInstance from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";

@@ -2,7 +2,7 @@
 
 import { columns } from "@/components/admin/column/collection";
 import { DataTable } from "@/components/admin/data-table";
-import Loader from "@/components/admin/loader";
+import Loader from "@/components/loader";
 import { buttonVariants } from "@/components/ui/button";
 import axiosInstance from "@/lib/axios";
 import { Separator } from "@radix-ui/react-separator";
