@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
   try {
     const data: FilterProps = await req.json();
 
-    const { sort, category, colors, sizes, price } = data;
+    const { sort, category, colors, sizes, price, page, pageSize } = data;
 
     await connectToMongoDB();
 
@@ -50,8 +50,14 @@ export async function POST(req: NextRequest) {
         break;
     }
 
+    const skip = (page - 1) * pageSize;
+    const limit = pageSize;
+
     // Execute the query based on filter options
-    let products = await Product.find(query).sort(sorts);
+    let products = await Product.find(query)
+      .sort(sorts)
+      .skip(skip)
+      .limit(limit);
 
     return NextResponse.json(products, { status: 200 });
   } catch (error) {

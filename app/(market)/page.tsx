@@ -10,7 +10,7 @@ export default function Page() {
         alt="banner"
         width={2000}
         height={1000}
-        className="rounded-lg"
+        className="rounded-lg w-screen"
         quality={100}
       />
       <Collections />

@@ -15,7 +15,7 @@ type OrderDetailsType = {
   _id: string;
   shippingAddress: shippingAddress;
   shippingRate: string;
-  totalAmmount: number;
+  totalAmount: number;
   products: OrderItemType[];
 };
 
@@ -67,7 +67,7 @@ export default async function OrderDetailsPage({
       </p>
       <p className="text-base-bold">
         Total Paid:{" "}
-        <span className="text-base-medium">${orderDetails.totalAmmount}</span>
+        <span className="text-base-medium">${orderDetails.totalAmount}</span>
       </p>
       <p className="text-base-bold">
         Shipping rate ID:{" "}

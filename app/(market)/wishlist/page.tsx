@@ -22,7 +22,7 @@ export default function WishlistPage() {
         (data?.wishlist || []).map(async (productId) => {
           const { product } = await getProductDetails(productId);
           return product;
-        })
+        }),
       );
 
       setWishlist(wishlistProducts);
@@ -35,15 +35,13 @@ export default function WishlistPage() {
   return isLoading ? (
     <Loader />
   ) : (
-    <div className="px-10 py-5 text-center">
-      <p className="text-heading3-bold my-10">Your Wishlist</p>
-      {wishlist.length === 0 && <p>No items in your wishlist</p>}
-
-      <div className="flex flex-wrap justify-center gap-16">
-        {wishlist.map((product) => (
-          <ProductCard product={product} key={product._id} />
-        ))}
-      </div>
+    <div className="px-10 py-5 text-center flex flex-col items-center w-full">
+      <p className="my-10 text-heading3-bold">Your Wishlist</p>
+      {wishlist.length === 0 ? (
+        <p>No items in your wishlist</p>
+      ) : (
+        <ProductCard products={wishlist} />
+      )}
     </div>
   );
 }

@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { SORT_OPTIONS } from "@/constants";
 import { cn } from "@/lib/utils";
 import { ChevronDown, Filter } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FilterCategory from "./_components/category-filter";
 import FilterColor from "./_components/color-filter";
 import FilterSize from "./_components/size-filter";
@@ -21,19 +21,43 @@ import ProductCard, {
   ProductNotFound,
 } from "@/components/market/product/product-card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { Button } from "@/components/ui/button";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+  getAllProductsCategory,
+  getAllProductsColor,
+  getAllProductsSize,
+} from "@/server/actions/product";
 
 const DEFAULT_CUSTOM_PRICE = [0, 1000] as [number, number];
 
 export default function ProductFilterPage() {
+  const router = useRouter();
+
+  const pageParams = useSearchParams().get("page");
+  const sortParams = useSearchParams().get("sort") as SortType | null;
+  const colorsParams = useSearchParams().getAll("colors");
+  const sizesParams = useSearchParams().getAll("sizes");
+
+  const [pages, setPages] = useState<number>(Number(pageParams ?? 1));
   const [filter, setFilter] = useState<FilterProps>({
-    sort: "none",
+    sort: sortParams ?? "none",
     category: "",
-    colors: [],
-    sizes: [],
+    colors: colorsParams,
+    sizes: sizesParams,
     price: {
       isCustom: false,
       range: DEFAULT_CUSTOM_PRICE,
     },
+    page: pages,
+    pageSize: 12,
   });
 
   console.log(filter);
@@ -42,7 +66,10 @@ export default function ProductFilterPage() {
     category,
     value,
   }: {
-    category: keyof Omit<typeof filter, "price" | "sort" | "category">;
+    category: keyof Omit<
+      typeof filter,
+      "price" | "sort" | "category" | "page" | "pageSize"
+    >;
     value: string;
   }) => {
     const isFiltereApplied = filter[category].includes(value as never);
@@ -75,16 +102,97 @@ export default function ProductFilterPage() {
     },
   });
 
-  console.log(products);
+  const { data: categories, isLoading: catergoryLoading } = useQuery({
+    queryKey: ["filter-category"],
+    queryFn: async () => {
+      const { categories } = await getAllProductsCategory();
+
+      return categories;
+    },
+  });
+
+  const { data: colors, isLoading: colorLoading } = useQuery({
+    queryKey: ["filter-color"],
+    queryFn: async () => {
+      const { colors } = await getAllProductsColor();
+
+      return colors;
+    },
+  });
+
+  const { data: sizes, isLoading: sizeLoading } = useQuery({
+    queryKey: ["filter-size"],
+    queryFn: async () => {
+      const { sizes } = await getAllProductsSize();
+
+      return sizes;
+    },
+  });
+
+  // Function to generate search params string
+  function generateSearchParams(filter: FilterProps): string {
+    const params = new URLSearchParams();
+    Object.entries(filter).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((item) => params.append(`${key}[]`, item.toString()));
+      } else if (typeof value === "object") {
+        Object.entries(value).forEach(([subKey, subValue]) =>
+          params.append(`${key}.${subKey}`, subValue.toString()),
+        );
+      } else {
+        params.set(key, value.toString());
+      }
+    });
+    return params.toString();
+  }
+
+  useEffect(() => {
+    if (categories && colors && sizes) {
+      const searchParams = generateSearchParams(filter);
+      console.log(searchParams);
+      router.push(`${window.location.pathname}?${searchParams}`, {
+        scroll: false
+      });
+    }
+  }, [categories, colors, sizes, filter, router]);
+
+  const isNextDisabled = products && products.length < 12;
+  const isPrevDisabled = pages === 1;
+
+  const handleNextPage = () => {
+    const nextPage = pages + 1;
+    const params = new URLSearchParams(window.location.search);
+    params.set("page", nextPage.toString()); // Convert nextPage to string
+    router.push(`${window.location.pathname}?${params.toString()}`);
+
+    setFilter((prev) => ({
+      ...prev,
+      page: nextPage,
+    }));
+    setPages(nextPage);
+  };
+
+  const handlePreviousPage = () => {
+    const prevPage = pages > 1 ? pages - 1 : 1; // Ensure prevPage is always greater than or equal to 1
+    const params = new URLSearchParams(window.location.search);
+    params.set("page", prevPage.toString()); // Convert prevPage to string
+    router.push(`${window.location.pathname}?${params.toString()}`);
+
+    setFilter((prev) => ({
+      ...prev,
+      page: prevPage,
+    }));
+    setPages(prevPage);
+  };
 
   return (
     <div className="flex w-full flex-col px-10 py-16 max-sm:px-3">
       <div className="flex justify-between">
         <h1 className="text-heading2-bold">Products</h1>
 
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
           <DropdownMenu>
-            <DropdownMenuTrigger className="group inline-flex items-center justify-center text-sm font-medium text-gray-700 max-lg:hidden">
+            <DropdownMenuTrigger className="group inline-flex items-center justify-center text-sm font-medium text-gray-700">
               Sort
               <ChevronDown className="-mr-1 ml-1 size-5 flex-shrink-0 text-grey-3 group-hover:text-grey-1" />
             </DropdownMenuTrigger>
@@ -117,21 +225,25 @@ export default function ProductFilterPage() {
               <Filter className="size-4 cursor-pointer lg:hidden" />
             </SheetTrigger>
             <SheetContent className="overflow-auto">
-              <div>
-                <ul
-                  className="space-y-4 border-b border-gray-200 
-            pb-6 text-sm font-medium text-gray-900"
-                >
-                  <FilterCategory setFilter={setFilter} filter={filter} />
-                </ul>
+              <div className="mt-4">
+                <FilterCategory
+                  setFilter={setFilter}
+                  filter={filter}
+                  isLoading={catergoryLoading}
+                  categories={categories}
+                />
 
                 <FilterColor
                   applyArrayFilter={applyArrayFilter}
                   filter={filter}
+                  isLoading={colorLoading}
+                  colors={colors}
                 />
                 <FilterSize
                   applyArrayFilter={applyArrayFilter}
                   filter={filter}
+                  isLoading={sizeLoading}
+                  sizes={sizes}
                 />
                 <FilterPrice
                   setFilter={setFilter}
@@ -152,9 +264,24 @@ export default function ProductFilterPage() {
           {/* FILTERS */}
 
           <div className="hidden lg:block">
-            <FilterCategory setFilter={setFilter} filter={filter} />
-            <FilterColor applyArrayFilter={applyArrayFilter} filter={filter} />
-            <FilterSize applyArrayFilter={applyArrayFilter} filter={filter} />
+            <FilterCategory
+              setFilter={setFilter}
+              filter={filter}
+              isLoading={catergoryLoading}
+              categories={categories}
+            />
+            <FilterColor
+              applyArrayFilter={applyArrayFilter}
+              filter={filter}
+              isLoading={colorLoading}
+              colors={colors}
+            />
+            <FilterSize
+              applyArrayFilter={applyArrayFilter}
+              filter={filter}
+              isLoading={sizeLoading}
+              sizes={sizes}
+            />
             <FilterPrice
               setFilter={setFilter}
               filter={filter}
@@ -171,16 +298,41 @@ export default function ProductFilterPage() {
               <ProductCardSkeleton />
             </ul>
           ) : !products || products.length === 0 ? (
-            <ul className="w-full mx-auto flex items-center justify-center lg:col-span-3">
+            <ul className="mx-auto flex w-full items-center justify-center lg:col-span-3">
               <ProductNotFound />
             </ul>
           ) : (
-            <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:col-span-3">
-              {products?.map((product) => (
-                <ProductCard product={product} key={product._id} />
-              ))}
-            </ul>
+            <ProductCard
+              className="h-max lg:col-span-3"
+              center
+              products={products}
+              corousel={false}
+            />
           )}
+        </div>
+        {/* PAGINATION */}
+
+        <div className="mt-12 grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+          <div></div>
+          <Pagination className="lg:col-span-3">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={handlePreviousPage}
+                  disabled={isPrevDisabled}
+                />
+              </PaginationItem>
+              <PaginationItem>
+                <Button variant="ghost">{pages}</Button>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext
+                  onClick={handleNextPage}
+                  disabled={isNextDisabled}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </div>
       </section>
     </div>

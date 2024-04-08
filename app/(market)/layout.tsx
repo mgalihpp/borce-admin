@@ -14,7 +14,10 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Borce Store",
+  title: {
+    default: "Borce Store",
+    template: `%s | Borce Store`,
+  },
   description:
     "Welcome to Borce Store - Your destination for premium quality products at unbeatable prices. Shop now for the latest trends in fashion, electronics, home essentials, and more!",
 };
@@ -30,7 +33,7 @@ export default function RootLayout({
         <body className={poppins.className}>
           <Navbar />
           <QueryProvider>
-            <div className="max-w-7xl mx-auto flex mt-[68px] items-center justify-center flex-col">
+            <div className="mx-auto mt-[68px] flex max-w-7xl flex-col items-center justify-center">
               {children}
               <Footer />
             </div>

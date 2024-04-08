@@ -6,28 +6,21 @@ import {
 } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { getAllProductsCategory } from "@/server/actions/product";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 interface FilterCategoryProps {
   setFilter: React.Dispatch<React.SetStateAction<FilterProps>>;
   filter: FilterProps;
+  isLoading: boolean;
+  categories: (string | null | undefined)[] | undefined;
 }
 
 const FilterCategory: React.FC<FilterCategoryProps> = ({
   setFilter,
   filter,
+  isLoading,
+  categories,
 }) => {
-  const { data: categories, isLoading } = useQuery({
-    queryKey: ["filter-category"],
-    queryFn: async () => {
-      const { categories } = await getAllProductsCategory();
-
-      return categories;
-    },
-  });
-
   return (
     <Accordion type="multiple">
       <AccordionItem value="category">

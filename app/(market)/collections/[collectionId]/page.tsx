@@ -51,9 +51,7 @@ export default async function CollectionPage({
         {collection.products.length === 0 ? (
           <p className="text-sm text-grey-3">No products found.</p>
         ) : (
-          collection.products.map((product) => (
-            <ProductCard product={product} key={product._id} />
-          ))
+            <ProductCard products={collection.products} />
         )}
       </div>
     </div>

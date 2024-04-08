@@ -6,8 +6,6 @@ import {
 } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { getAllProductsSize } from "@/server/actions/product";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 interface FilterSizeProps {
@@ -19,21 +17,16 @@ interface FilterSizeProps {
     value: string;
   }) => void;
   filter: FilterProps;
+  isLoading: boolean;
+  sizes: string[] | undefined;
 }
 
 const FilterSize: React.FC<FilterSizeProps> = ({
   applyArrayFilter,
   filter,
+  isLoading,
+  sizes,
 }) => {
-  const { data: sizes, isLoading } = useQuery({
-    queryKey: ["filter-size"],
-    queryFn: async () => {
-      const { sizes } = await getAllProductsSize();
-
-      return sizes;
-    },
-  });
-
   return (
     <Accordion type="multiple">
       <AccordionItem value="size">

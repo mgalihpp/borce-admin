@@ -50,10 +50,23 @@ type UserType = {
   updatedAt: string;
 };
 
+type SortType = "none" | "newest" | "price-asc" | "price-desc"
+
 type FilterProps = {
-  sort: "none" | "newest" | "price-asc" | "price-desc";
+  sort: SortType;
   category: string;
   colors: string[];
   sizes: string[];
   price: { isCustom: boolean; range: [number, number] };
+  page: number;
+  pageSize: number;
+};
+
+type OrderType = {
+  shippingAddress: Object;
+  _id: string;
+  customerClerkId: string;
+  products: [OrderItemType];
+  shippingRate: string;
+  totalAmount: number;
 };

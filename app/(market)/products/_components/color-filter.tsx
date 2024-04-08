@@ -6,8 +6,6 @@ import {
 } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { getAllProductsColor } from "@/server/actions/product";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 interface FilterColorProps {
@@ -19,21 +17,16 @@ interface FilterColorProps {
     value: string;
   }) => void;
   filter: FilterProps;
+  isLoading: boolean;
+  colors: string[] | undefined;
 }
 
 const FilterColor: React.FC<FilterColorProps> = ({
   applyArrayFilter,
   filter,
+  isLoading,
+  colors,
 }) => {
-  const { data: colors, isLoading } = useQuery({
-    queryKey: ["filter-color"],
-    queryFn: async () => {
-      const { colors } = await getAllProductsColor();
-
-      return colors;
-    },
-  });
-
   return (
     <Accordion type="multiple">
       <AccordionItem value="color">

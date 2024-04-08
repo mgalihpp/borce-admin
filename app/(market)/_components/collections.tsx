@@ -20,7 +20,7 @@ const Collections = async () => {
         <p className="text-body-bold">No collections found</p>
       ) : (
         <Carousel
-          className="max-xs:max-w-[200px] max-2xl:max-w-7xl max-xl:max-w-3xl max-lg:max-w-xl max-md:max-w-lg max-sm:max-w-[300px]"
+          className="max-xl:max-w-3xl max-lg:max-w-xl max-md:max-w-lg max-sm:max-w-[300px] max-xs:max-w-[200px] xl:max-w-6xl"
           opts={{
             loop: false,
           }}

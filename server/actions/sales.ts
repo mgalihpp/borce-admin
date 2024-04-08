@@ -11,7 +11,7 @@ export const getTotalSales = async () => {
 
     const totalOrders = orders.length;
     const totalRevenue = orders.reduce(
-      (acc, order) => acc + (order.totalAmmount || 0),
+      (acc, order) => acc + (order.totalAmount || 0),
       0
     );
     return { totalOrders, totalRevenue };
@@ -52,7 +52,7 @@ export const getSalesPerMonth = async () => {
         // Extract the month index from the order's createdAt date
         const monthIndex = new Date(order.createdAt).getMonth(); // 0 for January --> 11 for December
         // Update the sales amount for the corresponding month
-        acc[monthIndex] = (acc[monthIndex] || 0) + (order.totalAmmount || 0);
+        acc[monthIndex] = (acc[monthIndex] || 0) + (order.totalAmount || 0);
         return acc;
       },
       {}
