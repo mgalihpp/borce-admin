@@ -34,46 +34,48 @@ const FilterSize: React.FC<FilterSizeProps> = ({
     },
   });
 
-  return isLoading ? (
-    <FilterSizeSkeleton />
-  ) : !sizes || sizes.length === 0 ? (
-    <p className="text-xs text-grey-3">No sizes found.</p>
-  ) : (
+  return (
     <Accordion type="multiple">
       <AccordionItem value="size">
         <AccordionTrigger className="hover:no-underline">
           Sizes
         </AccordionTrigger>
         <AccordionContent className="pt-6">
-          <ul className="space-y-4">
-            {sizes.map((size: string | undefined | null, index) => (
-              <li key={index} className="flex items-center">
-                <input
-                  type="checkbox"
-                  id={`size-${index}`}
-                  className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                  onChange={() => {
-                    applyArrayFilter({
-                      category: "sizes",
-                      value: size as string,
-                    });
-                  }}
-                  checked={filter.sizes.includes(size as string)}
-                />
+          {isLoading ? (
+            <FilterSizeSkeleton />
+          ) : !sizes || sizes.length === 0 ? (
+            <p className="text-xs text-grey-3">No sizes found.</p>
+          ) : (
+            <ul className="space-y-4">
+              {sizes.map((size: string | undefined | null, index) => (
+                <li key={index} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id={`size-${index}`}
+                    className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    onChange={() => {
+                      applyArrayFilter({
+                        category: "sizes",
+                        value: size as string,
+                      });
+                    }}
+                    checked={filter.sizes.includes(size as string)}
+                  />
 
-                <label
-                  htmlFor={`size-${index}`}
-                  className={cn("ml-3 text-sm uppercase text-gray-600", {
-                    "font-medium text-gray-900": filter.sizes.includes(
-                      size as string,
-                    ),
-                  })}
-                >
-                  {size}
-                </label>
-              </li>
-            ))}
-          </ul>
+                  <label
+                    htmlFor={`size-${index}`}
+                    className={cn("ml-3 text-sm uppercase text-gray-600", {
+                      "font-medium text-gray-900": filter.sizes.includes(
+                        size as string,
+                      ),
+                    })}
+                  >
+                    {size}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          )}
         </AccordionContent>
       </AccordionItem>
     </Accordion>
@@ -81,8 +83,8 @@ const FilterSize: React.FC<FilterSizeProps> = ({
 };
 
 const FilterSizeSkeleton = () => {
-  return Array.from({ length: 1 }, (_, index) => (
-    <Skeleton className="mb-4 h-14 w-full" key={index} />
+  return Array.from({ length: 4 }, (_, index) => (
+    <Skeleton className="mb-4 h-5 w-full" key={index} />
   ));
 };
 

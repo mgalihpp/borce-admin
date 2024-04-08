@@ -28,61 +28,63 @@ const FilterCategory: React.FC<FilterCategoryProps> = ({
     },
   });
 
-  return isLoading ? (
-    <FilterCategorySkeleton />
-  ) : !categories || categories.length === 0 ? (
-    <p className="text-xs text-grey-3">No categories found.</p>
-  ) : (
+  return (
     <Accordion type="multiple">
       <AccordionItem value="category">
         <AccordionTrigger className="hover:no-underline">
           Categories
         </AccordionTrigger>
         <AccordionContent className="pt-6">
-          <ul className="space-y-4">
-            <li key={'all'}>
-              <button
-                className={cn(
-                  "disabled:cursor-not-allowed disabled:opacity-60",
-                  {
-                    "text-gray-900": filter.category === "",
-                    "text-grey-3 hover:text-gray-900 hover:text-opacity-75":
-                      filter.category !== "",
-                  },
-                )}
-                onClick={() => {
-                  setFilter((prev) => ({
-                    ...prev,
-                    category: "",
-                  }));
-                }}
-              >
-                All
-              </button>
-            </li>
-            {categories.map((category: string | undefined | null) => (
-              <li key={category}>
+          {isLoading ? (
+            <FilterCategorySkeleton />
+          ) : !categories || categories.length === 0 ? (
+            <p className="text-xs text-grey-3">No categories found.</p>
+          ) : (
+            <ul className="space-y-4">
+              <li key={"all"}>
                 <button
                   className={cn(
                     "disabled:cursor-not-allowed disabled:opacity-60",
                     {
-                      "text-gray-900": filter.category === category,
+                      "text-gray-900": filter.category === "",
                       "text-grey-3 hover:text-gray-900 hover:text-opacity-75":
-                        filter.category !== category,
+                        filter.category !== "",
                     },
                   )}
                   onClick={() => {
                     setFilter((prev) => ({
                       ...prev,
-                      category: category as string,
+                      category: "",
                     }));
                   }}
                 >
-                  {category}
+                  All
                 </button>
               </li>
-            ))}
-          </ul>
+              {categories.map((category: string | undefined | null) => (
+                <li key={category}>
+                  <button
+                    className={cn(
+                      "disabled:cursor-not-allowed disabled:opacity-60",
+                      {
+                        "text-gray-900": filter.category === category,
+                        "text-grey-3 hover:text-gray-900 hover:text-opacity-75":
+                          filter.category !== category,
+                      },
+                    )}
+                    onClick={() => {
+                      setFilter((prev) => ({
+                        ...prev,
+                        category: category as string,
+                      }));
+                    }}
+                  >
+                    {category}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </AccordionContent>
       </AccordionItem>
     </Accordion>
@@ -91,7 +93,7 @@ const FilterCategory: React.FC<FilterCategoryProps> = ({
 
 const FilterCategorySkeleton = () => {
   return Array.from({ length: 4 }, (_, index) => (
-    <Skeleton className="h-5 w-full" key={index} />
+    <Skeleton className="mb-4 h-5 w-full" key={index} />
   ));
 };
 
