@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import axiosInstance from "@/lib/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,7 +26,7 @@ import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
-  description: z.string().min(2).max(500).trim(),
+  description: z.string().min(2).max(5000).trim(),
   image: z.string(),
 });
 
@@ -53,7 +53,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
   const handleKeyPress = (
     e:
       | React.KeyboardEvent<HTMLInputElement>
-      | React.KeyboardEvent<HTMLTextAreaElement>
+      | React.KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -67,7 +67,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
         initialData
           ? `/api/collections/${initialData._id}`
           : "/api/collections",
-        data
+        data,
       );
 
       return res.data;
@@ -80,6 +80,9 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
         toast.success(`Collection ${initialData ? "updated" : "created"}`);
         queryClient.invalidateQueries({
           queryKey: ["collections"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["single-collection", initialData?._id],
         });
         router.push("/dashboard/collections");
       },
@@ -96,7 +99,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
       ) : (
         <p className="text-heading2-bold">Create Collection</p>
       )}
-      <Separator className="bg-grey-1 mt-4 mb-7" />
+      <Separator className="mb-7 mt-4 bg-grey-1" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
           <FormField

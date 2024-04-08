@@ -42,8 +42,10 @@ const ProductInfo = ({ product }: { product: ProductType }) => {
         <div className="w-full flex-col items-center">
           <Accordion type="single" collapsible>
             <AccordionItem value="product-details">
-              <AccordionTrigger>Product Details</AccordionTrigger>
-              <AccordionContent>{product.description}</AccordionContent>
+              <AccordionTrigger className="hover:no-underline">Product Details</AccordionTrigger>
+              <AccordionContent className="whitespace-pre-wrap">
+                {product.description}
+              </AccordionContent>
             </AccordionItem>
           </Accordion>
         </div>

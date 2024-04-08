@@ -24,8 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 import ImageUpload from "@/components/admin/image-upload";
 import { Button } from "@/components/ui/button";
 import MultiText from "./multi-text";
-import MultiSelect, { Option } from "./multi-select";
-import { unstable_noStore as noStore } from "next/cache";
+import MultiSelect from "./multi-select";
 
 const formSchema = z.object({
   title: z.string().min(2).max(30),
@@ -45,7 +44,6 @@ interface ProductFormProps {
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
-  noStore();
   const router = useRouter();
   const queryClient = useQueryClient();
   const [selectedValues, setSelectedValues] = React.useState(
@@ -119,6 +117,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         toast.success(`Product ${initialData ? "updated" : "created"}`);
         queryClient.invalidateQueries({
           queryKey: ["products"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["single-product", initialData?._id],
         });
         router.push("/dashboard/products");
       },

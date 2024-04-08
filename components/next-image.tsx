@@ -11,6 +11,7 @@ interface imageProps {
   width?: number;
   height?: number;
   quality?: number;
+  onClick?: () => void;
 }
 
 const NextImage: React.FC<imageProps> = ({
@@ -20,6 +21,7 @@ const NextImage: React.FC<imageProps> = ({
   width,
   height,
   quality,
+  onClick,
 }) => {
   const [isImageLoading, setImageLoading] = React.useState(true);
 
@@ -35,13 +37,14 @@ const NextImage: React.FC<imageProps> = ({
         loading="lazy"
         fill={!width || !height}
         onLoad={() => setImageLoading(false)}
+        onClick={() => onClick?.()}
         className={cn(
-          "h-full w-full object-center object-cover",
+          "h-full w-full object-cover object-center",
           {
             blur: isImageLoading,
             "remove-blur": !isImageLoading,
           },
-          className
+          className,
         )}
       />
     </div>
