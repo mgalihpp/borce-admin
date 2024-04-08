@@ -25,7 +25,7 @@ export default function CollectionPage() {
   ) : (
     <div className="px-10 py-5">
       <div className="flex items-center justify-between">
-        <p className="text-heading2-bold">Products</p>
+        <p className="text-heading2-bold">Collections</p>
         <Link
           className={buttonVariants({
             className: "bg-blue-1 text-white",

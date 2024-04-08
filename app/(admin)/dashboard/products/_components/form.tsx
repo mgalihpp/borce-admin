@@ -27,23 +27,9 @@ import MultiText from "./multi-text";
 import MultiSelect, { Option } from "./multi-select";
 import { unstable_noStore as noStore } from "next/cache";
 
-const OPTIONS: Option[] = [
-  { label: "nextjs", value: "nextjs" },
-  { label: "React", value: "react" },
-  { label: "Remix", value: "remix" },
-  { label: "Vite", value: "vite" },
-  { label: "Nuxt", value: "nuxt" },
-  { label: "Vue", value: "vue" },
-  { label: "Svelte", value: "svelte" },
-  { label: "Angular", value: "angular" },
-  { label: "Ember", value: "ember", disable: true },
-  { label: "Gatsby", value: "gatsby", disable: true },
-  { label: "Astro", value: "astro" },
-];
-
 const formSchema = z.object({
-  title: z.string().min(2).max(20),
-  description: z.string().min(2).max(500).trim(),
+  title: z.string().min(2).max(30),
+  description: z.string().min(2).max(1000).trim(),
   media: z.array(z.string()),
   category: z.string(),
   collections: z.array(z.string()),

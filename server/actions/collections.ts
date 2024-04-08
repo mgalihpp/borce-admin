@@ -8,3 +8,11 @@ export const getCollections = async () => {
   );
   return { collections };
 };
+
+export const getCollectionDetails = async (collectionId: string) => {
+  const { data: collection } = await axiosInstance.get<CollectionType>(
+    `/api/collections/${collectionId}`
+  );
+
+  return { collection };
+};

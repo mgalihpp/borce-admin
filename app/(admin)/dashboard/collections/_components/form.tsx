@@ -81,7 +81,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
         queryClient.invalidateQueries({
           queryKey: ["collections"],
         });
-        router.push("/collections");
+        router.push("/dashboard/collections");
       },
     });
   };

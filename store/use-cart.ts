@@ -12,6 +12,7 @@ interface CartItem {
 interface CartStore {
   cartItems: CartItem[];
   addItem: (item: CartItem) => void;
+  editItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
   increaseQuantity: (id: string) => void;
   decreaseQuantity: (id: string) => void;
@@ -35,6 +36,31 @@ const useCart = create(
 
         set({ cartItems: [...currentItems, { item, quantity, color, size }] });
         toast.success("Item added to cart", { icon: "🛒" });
+      },
+      editItem: (data: CartItem) => {
+        const { item, quantity, color, size } = data;
+        const currentItems = get().cartItems;
+
+        // Find the index of the item in the cart
+        const index = currentItems.findIndex(
+          (cart) => cart.item._id === item._id
+        );
+
+        // If the item exists in the cart, update its properties
+        if (index !== -1) {
+          // Create a copy of the cart items array
+          const updatedItems = [...currentItems];
+
+          // Update the properties of the item at the found index
+          updatedItems[index] = {
+            ...updatedItems[index],
+            quantity:
+              quantity !== undefined ? quantity : updatedItems[index].quantity,
+            color: color !== undefined ? color : updatedItems[index].color,
+            size: size !== undefined ? size : updatedItems[index].size,
+          };
+          set({ cartItems: updatedItems });
+        }
       },
       removeItem: (id: string) => {
         const newCartItems = get().cartItems.filter(

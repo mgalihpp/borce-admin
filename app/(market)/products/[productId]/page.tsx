@@ -1,4 +1,3 @@
-import Gallery from "@/components/market/product/gallery";
 import ProductCard from "@/components/market/product/product-card";
 import ProductInfo from "@/components/market/product/product-info";
 import {
@@ -15,14 +14,13 @@ export default async function SingleProductPage({
   const { relatedProducts } = await getRelatedProducts(params.productId);
 
   return (
-    <>
-      <div className="flex items-center justify-start gap-16 py-10 px-5 max-md:flex-col max-md:items-center">
-        <Gallery media={product.media} />
+    <div className="max-w-7xl w-full">
+      <div className="w-full flex justify-start gap-16 py-10 px-10 max-md:flex-col max-md:items-center max-sm:px-2">
         <ProductInfo product={product} />
       </div>
 
-      <div className="flex flex-col items-center px-10 py-10 max-md:px-3 space-y-16">
-        <p className="text-heading3-bold">Related Products</p>
+      <div className="w-full flex flex-col max-sm:items-center items-start px-10 py-10 max-md:px-3 space-y-16">
+        <p className="text-heading4-medium">Customers also purchased</p>
         {!relatedProducts || relatedProducts.length === 0 ? (
           <p className="text-small-normal">No related products found.</p>
         ) : (
@@ -33,6 +31,6 @@ export default async function SingleProductPage({
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

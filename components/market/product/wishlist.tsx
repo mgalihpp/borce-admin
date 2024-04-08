@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import axiosInstance from "@/lib/axios";
 import { useUser } from "@clerk/nextjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,9 +12,14 @@ import { toast } from "sonner";
 interface WistListProps {
   product: ProductType;
   updateSignedInUser?: (updatedUser: UserType) => void;
+  type?: "icon" | "button";
 }
 
-const Wishlist: React.FC<WistListProps> = ({ product, updateSignedInUser }) => {
+const Wishlist: React.FC<WistListProps> = ({
+  product,
+  updateSignedInUser,
+  type = "icon",
+}) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { user } = useUser();
@@ -77,10 +83,15 @@ const Wishlist: React.FC<WistListProps> = ({ product, updateSignedInUser }) => {
     });
   };
 
-  return (
+  return type === "icon" ? (
     <button onClick={handleLike}>
       <Heart fill={`${isLiked ? "red" : "white"} `} />
     </button>
+  ) : (
+    <Button variant="outline" className="w-full" onClick={handleLike}>
+      <Heart fill={`${isLiked ? "red" : "white"} `} className="size-4 mr-2" />
+      {isLiked ? "Remove from Wishlist" : "Add to Wishlist"}
+    </Button>
   );
 };
 

@@ -4,8 +4,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-white">
-      <div className="mx-auto max-w-screen-xl space-y-8 px-4 py-16 sm:px-6 lg:space-y-16 lg:px-8">
+    <footer className="bg-white mx-auto max-w-screen-xl w-full">
+      <div className="space-y-8 px-4 py-16 sm:px-6 lg:space-y-16 lg:px-10">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
             <div className="text-teal-600">
@@ -235,7 +235,7 @@ const Footer = () => {
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
-                  <Link href="/dashboard" replace>
+                  <Link href="/dashboard" replace className="text-gray-700 transition hover:opacity-75">
                     Dashboard {"(Admin)"}
                   </Link>
                 </li>
@@ -320,7 +320,7 @@ const Footer = () => {
         </div>
 
         <p className="text-xs text-gray-500">
-          &copy; 2022. Company Name. All rights reserved.
+          &copy; 2024. Borce. All rights reserved.
         </p>
       </div>
     </footer>

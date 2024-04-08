@@ -46,13 +46,13 @@ const Delete: React.FC<DeleteItemProps> = ({ item, id }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="bg-red-1 text-white">
+        <Button variant="destructive">
           <Trash className="size-4" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="bg-white text-grey-1">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-red-1">
+          <AlertDialogTitle>
             Are you absolutely sure ?
           </AlertDialogTitle>
           <AlertDialogDescription>
@@ -65,7 +65,7 @@ const Delete: React.FC<DeleteItemProps> = ({ item, id }) => {
           <AlertDialogAction
             onClick={() => deleteItem()}
             disabled={isPending}
-            className="bg-red-1 text-white"
+            className="bg-red-1 text-white hover:bg-red-1/75"
           >
             Delete
           </AlertDialogAction>

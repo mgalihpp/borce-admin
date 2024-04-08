@@ -33,3 +33,42 @@ export const navLinks = [
     label: "Customers",
   },
 ];
+
+export const SORT_OPTIONS = [
+  {
+    name: "None",
+    value: "none",
+  },
+  {
+    name: "Newest",
+    value: "newest",
+  },
+  {
+    name: "Price: Low to High",
+    value: "price-asc",
+  },
+  {
+    name: "Price: High to Low",
+    value: "price-desc",
+  },
+] as const;
+
+export const PRICE_FILTERS = {
+  id: "price",
+  name: "Price",
+  option: [
+    {
+      value: [0, 1000],
+      label: "Any price",
+    },
+    {
+      value: [0, 50],
+      label: "Under 50$",
+    },
+    {
+      value: [0, 100],
+      label: "Under 100$",
+    },
+    // custom option defined in jsx
+  ],
+} as const;

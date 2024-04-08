@@ -25,7 +25,7 @@ export const columns: ColumnDef<CollectionType>[] = [
     id: "actions",
     header: "Actions",
     cell: ({ row }) => (
-      <div className="space-x-2 flex items-center justify-center">
+      <div className="space-x-2 flex items-center justify-start">
         <Edit item="collections" id={row.original._id} />
         <Delete item="collections" id={row.original._id} />
       </div>

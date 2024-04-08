@@ -49,3 +49,11 @@ type UserType = {
   createdAt: string;
   updatedAt: string;
 };
+
+type FilterProps = {
+  sort: "none" | "newest" | "price-asc" | "price-desc";
+  category: string;
+  colors: string[];
+  sizes: string[];
+  price: { isCustom: boolean; range: [number, number] };
+};
