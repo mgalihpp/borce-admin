@@ -10,8 +10,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import Loader from "@/components/loader";
+import { useMutation } from "@tanstack/react-query";
+import axiosInstance from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
+  const router = useRouter();
   const { user } = useUser();
   const { cartItems, removeItem, editItem } = useCart();
 
@@ -26,6 +30,26 @@ export default function CartPage() {
     customerId: user?.id,
     email: user?.emailAddresses[0].emailAddress,
     name: user?.fullName,
+  };
+
+  const { mutate: createCheckout } = useMutation({
+    mutationKey: ["checkout"],
+    mutationFn: async () => {
+      const { data } = await axiosInstance.post("/api/checkout", {
+        cartItems,
+        customer,
+      });
+
+      return data;
+    },
+  });
+
+  const handleCheckout = () => {
+    createCheckout(undefined, {
+      onSuccess: (data) => {
+        router.push(data.url);
+      },
+    });
   };
 
   return !cartItems ? (
@@ -170,7 +194,9 @@ export default function CartPage() {
             <p className="text-small-medium">${totalRounded}</p>
           </div>
 
-          <Button>Checkout</Button>
+          <Button type="button" onClick={handleCheckout}>
+            Checkout
+          </Button>
         </div>
       </div>
     </div>

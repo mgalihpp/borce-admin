@@ -50,7 +50,7 @@ type UserType = {
   updatedAt: string;
 };
 
-type SortType = "none" | "newest" | "price-asc" | "price-desc"
+type SortType = "none" | "newest" | "price-asc" | "price-desc";
 
 type FilterProps = {
   sort: SortType;
@@ -70,3 +70,10 @@ type OrderType = {
   shippingRate: string;
   totalAmount: number;
 };
+
+interface CartItem {
+  item: ProductType;
+  quantity: number;
+  color?: string;
+  size?: string;
+}

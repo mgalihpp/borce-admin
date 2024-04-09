@@ -2,12 +2,6 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-interface CartItem {
-  item: ProductType;
-  quantity: number;
-  color?: string;
-  size?: string;
-}
 
 interface CartStore {
   cartItems: CartItem[];
