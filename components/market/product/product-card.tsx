@@ -57,8 +57,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
               className="max-h-[300px] min-h-[300px] max-w-[300px] rounded-lg object-cover max-sm:object-cover"
             />
             <div className="text-start">
-              <p className="truncate text-base-bold">{product.title}</p>
-              <p className="text-small-medium capitalize text-grey-3">
+              <p className="truncate text-base-bold pb-1">{product.title}</p>
+              <p className="text-small-medium capitalize text-grey-3 pb-1">
                 {product.category}
               </p>
             </div>
