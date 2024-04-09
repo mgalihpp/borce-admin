@@ -1,8 +1,9 @@
 import NextImage from "@/components/next-image";
 import Collections from "./_components/collections";
 import ProductList from "./_components/product-list";
+export const dynamic = "force-dynamic";
 
-export default function Page() {
+export default async function Page() {
   return (
     <>
       <NextImage
@@ -10,7 +11,7 @@ export default function Page() {
         alt="banner"
         width={2000}
         height={1000}
-        className="rounded-lg w-screen"
+        className="w-screen rounded-lg"
         quality={100}
       />
       <Collections />

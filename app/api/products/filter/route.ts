@@ -6,7 +6,16 @@ export async function POST(req: NextRequest) {
   try {
     const data: FilterProps = await req.json();
 
-    const { sort, category, colors, sizes, price, page, pageSize } = data;
+    const {
+      sort,
+      category,
+      query: searchQuery,
+      colors,
+      sizes,
+      price,
+      page,
+      pageSize,
+    } = data;
 
     await connectToMongoDB();
 
@@ -16,6 +25,13 @@ export async function POST(req: NextRequest) {
 
     if (category) {
       query["category"] = { $in: category };
+    }
+
+    // Filter by search query
+
+    if (searchQuery.length > 0) {
+      const regex = new RegExp(searchQuery, "i");
+      query["title"] = { $regex: regex };
     }
 
     // Filter by colors

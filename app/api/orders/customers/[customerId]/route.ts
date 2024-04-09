@@ -24,9 +24,7 @@ export async function GET(
 
     if (!orders) return NextResponse.json("Order not found", { status: 404 });
 
-    orders = [...orders, customer] as never;
-
-    return NextResponse.json(orders, { status: 200 });
+    return NextResponse.json({ orders, customer }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "Internal Server Error" },

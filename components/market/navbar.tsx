@@ -1,14 +1,14 @@
 "use client";
 
 import { UserButton, useUser } from "@clerk/nextjs";
-import { CircleUserRound, Menu, Search, ShoppingCart } from "lucide-react";
-import Image from "next/image";
+import { CircleUserRound, Menu, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { useEventListener } from "usehooks-ts";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import useCart from "@/store/use-cart";
+import NextImage from "../next-image";
 
 const Navbar = () => {
   const router = useRouter();
@@ -41,7 +41,13 @@ const Navbar = () => {
     <div className="navbar">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-10 py-2.5 max-sm:px-2">
         <Link href="/">
-          <Image src="/logo.png" alt="logo" width={130} height={100} />
+          <NextImage
+            src="/logo.png"
+            alt="logo"
+            width={130}
+            height={100}
+            className="h-10 w-32 object-contain"
+          />
         </Link>
 
         <div className="flex gap-6 text-base-bold max-lg:hidden">
@@ -67,22 +73,6 @@ const Navbar = () => {
           >
             Orders
           </Link>
-        </div>
-
-        <div className="flex items-center gap-3 rounded-lg border border-grey-2 px-3 py-2">
-          <input
-            ref={inputRef}
-            className="outline-none max-sm:max-w-[100px]"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button
-            disabled={searchQuery === ""}
-            onClick={() => router.push(`/search/${searchQuery}`)}
-          >
-            <Search className="size-4 cursor-pointer items-center hover:text-blue-1" />
-          </button>
         </div>
 
         <div className="relative flex items-center gap-3">

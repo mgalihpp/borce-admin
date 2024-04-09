@@ -3,6 +3,7 @@
 import React from "react";
 import {
   CldUploadWidget,
+  CloudinaryUploadWidgetInfo,
   CloudinaryUploadWidgetResults,
 } from "next-cloudinary";
 import { Button } from "@/components/ui/button";
@@ -21,15 +22,16 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   onRemove,
 }) => {
   const onUpload = (results: CloudinaryUploadWidgetResults) => {
-    onChange(results.info?.secure_url as string);
+    const res = results.info as CloudinaryUploadWidgetInfo;
+    onChange(res.secure_url);
   };
 
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center gap-4">
         {value.map((url) => (
-          <div key={url} className="relative w-[200px] h-[200px]">
-            <div className="absolute top-0 right-0 z-10">
+          <div key={url} className="relative h-[200px] w-[200px]">
+            <div className="absolute right-0 top-0 z-10">
               <Button
                 type="button"
                 onClick={() => onRemove(url)}
@@ -42,7 +44,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             <Image
               src={url}
               alt="collections"
-              className="object-contain rounded-lg"
+              className="rounded-lg object-contain"
               fill
             />
           </div>
@@ -57,7 +59,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               onClick={() => open()}
               className="bg-grey-1 text-white"
             >
-              <Plus className="size-4 mr-2" />
+              <Plus className="mr-2 size-4" />
               Upload Image
             </Button>
           );

@@ -20,8 +20,23 @@ const orderSchema = new mongoose.Schema({
     postalCode: String,
     country: String,
   },
-  shippingRate: String,
+  shippingRate: {
+    id: String,
+    delivery_estimate: {
+      maximum: {
+        unit: String,
+        value: Number,
+      },
+      minimum: {
+        unit: String,
+        value: Number,
+      },
+    },
+  },
+  subTotal: Number,
   totalAmount: Number,
+  paymentMethod: [String],
+  status: String,
   createdAt: {
     type: Date,
     default: Date.now,

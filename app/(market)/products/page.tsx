@@ -8,7 +8,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SORT_OPTIONS } from "@/constants";
 import { cn } from "@/lib/utils";
-import { ChevronDown, Filter } from "lucide-react";
+import { ChevronDown, Filter, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import FilterCategory from "./_components/category-filter";
 import FilterColor from "./_components/color-filter";
@@ -35,6 +35,7 @@ import {
   getAllProductsColor,
   getAllProductsSize,
 } from "@/server/actions/product";
+import { Input } from "@/components/ui/input";
 
 const DEFAULT_CUSTOM_PRICE = [0, 1000] as [number, number];
 
@@ -42,16 +43,19 @@ export default function ProductFilterPage() {
   const router = useRouter();
 
   const pageParams = useSearchParams().get("page");
+  const queryParams = useSearchParams().get("query");
+  const categoryParams = useSearchParams().get("category");
   const sortParams = useSearchParams().get("sort") as SortType | null;
-  const colorsParams = useSearchParams().getAll("colors");
-  const sizesParams = useSearchParams().getAll("sizes");
+  const colorsParams = useSearchParams().getAll("colors[]");
+  const sizesParams = useSearchParams().getAll("sizes[]");
 
   const [pages, setPages] = useState<number>(Number(pageParams ?? 1));
   const [filter, setFilter] = useState<FilterProps>({
     sort: sortParams ?? "none",
-    category: "",
-    colors: colorsParams,
-    sizes: sizesParams,
+    category: categoryParams ?? "",
+    colors: colorsParams ?? [],
+    sizes: sizesParams ?? [],
+    query: queryParams ?? "",
     price: {
       isCustom: false,
       range: DEFAULT_CUSTOM_PRICE,
@@ -60,6 +64,10 @@ export default function ProductFilterPage() {
     pageSize: 12,
   });
 
+  console.log("colors", sortParams);
+  console.log("colors", categoryParams);
+  console.log("colors", colorsParams);
+  console.log("sizes", sizesParams);
   console.log(filter);
 
   const applyArrayFilter = ({
@@ -68,7 +76,7 @@ export default function ProductFilterPage() {
   }: {
     category: keyof Omit<
       typeof filter,
-      "price" | "sort" | "category" | "page" | "pageSize"
+      "price" | "sort" | "category" | "page" | "pageSize" | "query"
     >;
     value: string;
   }) => {
@@ -149,9 +157,9 @@ export default function ProductFilterPage() {
   useEffect(() => {
     if (categories && colors && sizes) {
       const searchParams = generateSearchParams(filter);
-      console.log(searchParams);
+      console.log("useffect:", filter);
       router.push(`${window.location.pathname}?${searchParams}`, {
-        scroll: false
+        scroll: false,
       });
     }
   }, [categories, colors, sizes, filter, router]);
@@ -252,6 +260,27 @@ export default function ProductFilterPage() {
                   maxPrice={maxPrice}
                   defaultPrice={DEFAULT_CUSTOM_PRICE}
                 />
+                <Button
+                  variant="transparent"
+                  className="mt-4 p-0 hover:opacity-75"
+                  onClick={() =>
+                    setFilter(() => ({
+                      sort: "none",
+                      category: "",
+                      colors: [],
+                      sizes: [],
+                      query: "",
+                      price: {
+                        isCustom: false,
+                        range: DEFAULT_CUSTOM_PRICE,
+                      },
+                      page: 1,
+                      pageSize: 12,
+                    }))
+                  }
+                >
+                  Reset all
+                </Button>
               </div>
             </SheetContent>
           </Sheet>
@@ -264,6 +293,23 @@ export default function ProductFilterPage() {
           {/* FILTERS */}
 
           <div className="hidden lg:block">
+            <div className="m-0 flex w-full items-center gap-3 rounded-lg border border-grey-2 px-2 py-1">
+              <Input
+                className="border-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                placeholder="Search..."
+                value={filter.query}
+                onChange={(e) => {
+                  setFilter((prev) => ({
+                    ...prev,
+                    query: e.target.value,
+                  }));
+                }}
+              />
+              <button disabled={filter.query === ""}>
+                <Search className="size-4 cursor-pointer items-center hover:text-blue-1" />
+              </button>
+            </div>
+            <Separator className="mt-6" />
             <FilterCategory
               setFilter={setFilter}
               filter={filter}
@@ -289,6 +335,27 @@ export default function ProductFilterPage() {
               maxPrice={maxPrice}
               defaultPrice={DEFAULT_CUSTOM_PRICE}
             />
+            <Button
+              variant="transparent"
+              className="mt-4 p-0 hover:opacity-75"
+              onClick={() =>
+                setFilter(() => ({
+                  sort: "none",
+                  category: "",
+                  colors: [],
+                  sizes: [],
+                  query: "",
+                  price: {
+                    isCustom: false,
+                    range: DEFAULT_CUSTOM_PRICE,
+                  },
+                  page: 1,
+                  pageSize: 12,
+                }))
+              }
+            >
+              Reset all
+            </Button>
           </div>
 
           {/* PRODUCTS GRID */}

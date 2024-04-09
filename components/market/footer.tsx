@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import NextImage from "../next-image";
 
 const Footer = () => {
   return (
@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
             <div className="text-teal-600">
-              <Image src="/logo.png" alt="logo" width={130} height={100} />
+              <NextImage src="/logo.png" alt="logo" width={130} height={100} className="w-32 h-10 object-contain" />
             </div>
 
             <p className="mt-4 max-w-xs text-sm text-gray-500">

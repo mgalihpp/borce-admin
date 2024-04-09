@@ -8,7 +8,7 @@ body,
   height: 100%;
 }
 
-html:not([data-scroll="0"]) .navbar {
+.navbar {
   position: fixed;
   top: 0;
   width: 100%;
@@ -75,4 +75,39 @@ html:not([data-scroll="0"]) .navbar {
 .remove-blur {
   filter: blur(0px);
   transition: filter 0.3s ease-in;
+}
+
+.hover-underline {
+  display: inline-flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  color: black; /* Set default text color to black */
+  transition: color 0.25s ease-in-out; /* Add transition for smooth color change */
+}
+
+/* .hover-underline:hover {
+  background-image: linear-gradient(90deg, #2d6ade 0%, #bd24df 97.15%);
+  -webkit-background-clip: text; /* Clip the background to the text */
+  /* background-clip: text; */
+  /* color: transparent; Hide the original text color */
+/* }  */
+
+.hover-underline::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  /* background: linear-gradient(90deg, #2d6ade 0%, #bd24df 97.15%); */
+  background: black;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }

@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { productId: string } }
+  { params }: { params: { productId: string } },
 ) {
   try {
     const product = await Product.findById(params.productId).populate({
@@ -17,7 +17,7 @@ export async function GET(
     if (!product) {
       return new NextResponse(
         JSON.stringify({ message: "Product not found" }),
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -32,14 +32,14 @@ export async function GET(
   } catch (error) {
     return NextResponse.json(
       { message: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { productId: string } }
+  { params }: { params: { productId: string } },
 ) {
   try {
     const { userId } = auth();
@@ -57,7 +57,7 @@ export async function POST(
         {
           message: "Product not found",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -139,7 +139,7 @@ export async function POST(
       },
       {
         new: true,
-      }
+      },
     ).populate({
       path: "collections",
       model: Collection,
@@ -148,10 +148,10 @@ export async function POST(
     if (!updatedProduct) {
       return NextResponse.json(
         { message: "Failed to update product" },
-        { status: 400 }
+        { status: 400 },
       );
     }
-    
+
     await updatedProduct.save();
 
     // Step 2: Update the Collection documents with references to the updated Product
@@ -169,7 +169,7 @@ export async function POST(
   } catch (error) {
     return NextResponse.json(
       { message: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -180,7 +180,7 @@ export async function DELETE(
     params,
   }: {
     params: { productId: string };
-  }
+  },
 ) {
   try {
     const { userId } = auth();
@@ -198,7 +198,7 @@ export async function DELETE(
         {
           message: "Product not found",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -213,8 +213,8 @@ export async function DELETE(
               product,
             },
           },
-        })
-      )
+        }),
+      ),
     );
 
     return NextResponse.json(
@@ -223,12 +223,13 @@ export async function DELETE(
       },
       {
         status: 200,
-      }
+      },
     );
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -16,8 +16,8 @@ const NoFound = () => {
           />
           <p className="text-base-medium">No item in Cart</p>
           <Link
-            href="/"
-            className="inline-flex text-small-normal underline underline-offset-2 focus:outline-none rounded-lg px-5 py-2.5 text-center dark:focus:ring-primary my-4"
+            href="/products"
+            className="inline-flex text-small-normal hover-underline focus:outline-none rounded-lg px-5 py-2.5 text-center dark:focus:ring-primary my-4"
           >
             Back to Shopping
           </Link>

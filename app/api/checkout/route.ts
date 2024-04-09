@@ -10,8 +10,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json("Not enough data to checkout", { status: 400 });
     }
 
-    console.log(cartItems, customer);
-
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
@@ -36,17 +34,18 @@ export async function POST(req: NextRequest) {
               ...(cart.color && { color: cart.color }),
             },
           },
-          unit_amount: cart.item.price * 100,
+          unit_amount: Math.round(cart.item.price * 100),
         },
         quantity: cart.quantity,
       })),
       client_reference_id: customer.customerId,
-      success_url: `${process.env.ADMIN_DASHBOARD_URL}/payment?success=1&token=${"dawdad"}`,
+      success_url: `${process.env.ADMIN_DASHBOARD_URL}/payment?success=1&uid=${customer.customerId}`,
       cancel_url: `${process.env.ADMIN_DASHBOARD_URL}/cart`,
     });
 
     return NextResponse.json(session, { status: 201 });
   } catch (error) {
+    console.log(error)
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 },

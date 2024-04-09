@@ -32,7 +32,7 @@ export default function CartPage() {
     name: user?.fullName,
   };
 
-  const { mutate: createCheckout } = useMutation({
+  const { mutate: createCheckout, isPending } = useMutation({
     mutationKey: ["checkout"],
     mutationFn: async () => {
       const { data } = await axiosInstance.post("/api/checkout", {
@@ -194,7 +194,7 @@ export default function CartPage() {
             <p className="text-small-medium">${totalRounded}</p>
           </div>
 
-          <Button type="button" onClick={handleCheckout}>
+          <Button type="button" onClick={handleCheckout} disabled={isPending}>
             Checkout
           </Button>
         </div>

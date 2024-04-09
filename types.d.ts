@@ -57,18 +57,29 @@ type FilterProps = {
   category: string;
   colors: string[];
   sizes: string[];
+  query: string;
   price: { isCustom: boolean; range: [number, number] };
   page: number;
   pageSize: number;
 };
 
 type OrderType = {
-  shippingAddress: Object;
+  shippingAddress: {
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
   _id: string;
   customerClerkId: string;
   products: [OrderItemType];
-  shippingRate: string;
+  shippingRate: {
+    id: string;
+  };
   totalAmount: number;
+  paymentMethod: string[];
+  createdAt: Date;
 };
 
 interface CartItem {

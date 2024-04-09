@@ -31,15 +31,17 @@ const Delete: React.FC<DeleteItemProps> = ({ item, id }) => {
     mutationFn: async () => {
       const res = await axiosInstance.delete(`/api/${itemType}/${id}`);
 
-      if (res.status !== 400) {
-        toast.success(`${item} deleted`);
-      }
+      return res;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [itemType],
       });
+      toast.success(`${item} deleted`);
       redirect(`/dashboard/${itemType}`);
+    },
+    onError(error) {
+      toast.error(error.message);
     },
   });
 
@@ -52,9 +54,7 @@ const Delete: React.FC<DeleteItemProps> = ({ item, id }) => {
       </AlertDialogTrigger>
       <AlertDialogContent className="bg-white text-grey-1">
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            Are you absolutely sure ?
-          </AlertDialogTitle>
+          <AlertDialogTitle>Are you absolutely sure ?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will be permanently delete your{" "}
             {item}.
