@@ -64,12 +64,6 @@ export default function ProductFilterPage() {
     pageSize: 12,
   });
 
-  console.log("colors", sortParams);
-  console.log("colors", categoryParams);
-  console.log("colors", colorsParams);
-  console.log("sizes", sizesParams);
-  console.log(filter);
-
   const applyArrayFilter = ({
     category,
     value,
@@ -157,7 +151,6 @@ export default function ProductFilterPage() {
   useEffect(() => {
     if (categories && colors && sizes) {
       const searchParams = generateSearchParams(filter);
-      console.log("useffect:", filter);
       router.push(`${window.location.pathname}?${searchParams}`, {
         scroll: false,
       });

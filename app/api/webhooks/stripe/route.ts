@@ -9,11 +9,7 @@ import { headers } from "next/headers";
 export const POST = async (req: NextRequest) => {
   const body = await req.text();
 
-  // console.log(body);
-
   const signature = headers().get("Stripe-Signature") as string;
-
-  // console.log(signature);
 
   let event: Stripe.Event;
 
@@ -26,8 +22,6 @@ export const POST = async (req: NextRequest) => {
   } catch (error) {
     return new NextResponse("Webhook error", { status: 400 });
   }
-
-  console.log("Received Stripe webhook event:", event.type);
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
@@ -45,8 +39,6 @@ export const POST = async (req: NextRequest) => {
       phone: session.customer_details?.phone,
       payment: session.payment_method_types,
     };
-
-    console.log(customerInfo);
 
     const shippingAddress = {
       street: session?.shipping_details?.address?.line1,
