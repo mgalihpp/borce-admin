@@ -1,4 +1,13 @@
-# PREVIEW
+# PREVIEW STORE
+
+<p align='center'>
+    <img src='./docs/prev3.png' alt='preview'>
+    <img src='./docs/prev4.png' alt='preview'>
+    <img src='./docs/prev5.png' alt='preview'>
+    <img src='./docs/prev6.png' alt='preview'>
+</p>
+
+# PREVIEW ADMIN
 
 <p align='center'>
     <img src='./docs/prev1.png' alt='preview'>
