@@ -76,6 +76,26 @@ type OrderType = {
   products: [OrderItemType];
   shippingRate: {
     id: string;
+    object: string;
+    active: boolean;
+    created: number;
+    delivery_estimate: {
+      maximum: {
+        unit: string;
+        value: number;
+      };
+      minimum: {
+        unit: string;
+        value: number;
+      };
+    };
+    fixed_amount: {
+      amount: number;
+      currency: string;
+    };
+    display_name: string;
+    livemode: boolean;
+    tax_behavior: string;
   };
   totalAmount: number;
   paymentMethod: string[];

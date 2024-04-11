@@ -80,6 +80,9 @@ export const POST = async (req: NextRequest) => {
       status: status ?? "completed",
     });
 
+    console.log("ship:", shippingRate);
+    console.log("new:", newOrder);
+
     await newOrder.save();
 
     let customer = await Customer.findOne({

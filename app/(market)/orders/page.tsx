@@ -10,13 +10,13 @@ import { Separator } from "@/components/ui/separator";
 import { getOrders } from "@/server/actions/order";
 import { auth } from "@clerk/nextjs";
 import { format } from "date-fns";
-import { Check, CircleEllipsis, EllipsisIcon, X } from "lucide-react";
+import { EllipsisIcon, X } from "lucide-react";
 import Link from "next/link";
 
 export default async function OrderPage() {
   const { userId } = auth();
 
-  const { orders, customer, shippingRate } = await getOrders(userId as string);
+  const { orders, customer } = await getOrders(userId as string);
 
   return orders.length === 0 ? (
     <section className="bg-white">
@@ -90,7 +90,7 @@ export default async function OrderPage() {
             <div className="space-y-4">
               <div className="flex flex-col gap-2">
                 <h6 className="text-sm text-grey-3">Payment</h6>
-                <p className="text-small-medium">
+                <p className="text-small-medium capitalize">
                   {orders[0].paymentMethod ?? ""}
                 </p>
               </div>
@@ -99,7 +99,7 @@ export default async function OrderPage() {
               <div className="flex flex-col gap-2">
                 <h6 className="text-sm text-grey-3">Shipping Rate</h6>
                 <p className="text-small-medium">
-                  {shippingRate?.display_name}
+                  {orders[0].shippingRate?.display_name}
                 </p>
               </div>
             </div>
@@ -107,8 +107,21 @@ export default async function OrderPage() {
               <div className="flex flex-col gap-2">
                 <h6 className="text-sm text-grey-3">Delivery Estimate</h6>
                 <p className="text-small-medium">
-                  {shippingRate.delivery_estimate?.minimum?.value}-
-                  {shippingRate.delivery_estimate?.maximum?.value} Days
+                  {orders[0].shippingRate.delivery_estimate.minimum.value}-
+                  {orders[0].shippingRate.delivery_estimate.maximum.value} Days
+                </p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div className="flex flex-col gap-2">
+                <h6 className="text-sm text-grey-3">Cost</h6>
+                <p className="text-small-medium">
+                  {(
+                    orders[0].shippingRate.fixed_amount.amount / 100
+                  ).toLocaleString(undefined, {
+                    style: "currency",
+                    currency: orders[0].shippingRate.fixed_amount.currency,
+                  })}
                 </p>
               </div>
             </div>

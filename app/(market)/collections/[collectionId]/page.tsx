@@ -27,15 +27,15 @@ export default async function CollectionPage({
       />
       <p className="text-heading3-bold text-grey-3">{collection.title}</p>
       {collection.description.length > 1000 ? (
-        <Accordion type="multiple" className="max-w-[900px]">
+        <Accordion type="multiple" className="max-w-xl max-sm:max-w-xs max-md:max-w-md">
           <AccordionItem value="description">
             <AccordionTrigger className="text-sm font-normal text-grey-3 hover:no-underline">
-              <p className="max-w-[900px] overflow-hidden text-ellipsis whitespace-nowrap">
+              <p className="max-w-xl max-sm:max-w-xs max-md:max-w-md overflow-hidden text-ellipsis whitespace-nowrap">
                 {collection.description.slice(0, 200)}
               </p>
             </AccordionTrigger>
             <AccordionContent>
-              <p className="whitespace-pre-wrap text-center text-sm font-normal text-grey-3">
+              <p className="whitespace-pre-wrap text-start text-sm font-normal text-grey-3">
                 {collection.description}
               </p>
             </AccordionContent>
@@ -51,7 +51,7 @@ export default async function CollectionPage({
         {collection.products.length === 0 ? (
           <p className="text-sm text-grey-3">No products found.</p>
         ) : (
-            <ProductCard products={collection.products} />
+          <ProductCard products={collection.products} />
         )}
       </div>
     </div>

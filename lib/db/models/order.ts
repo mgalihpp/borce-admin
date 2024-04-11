@@ -22,6 +22,9 @@ const orderSchema = new mongoose.Schema({
   },
   shippingRate: {
     id: String,
+    object: String,
+    active: Boolean,
+    created: Number,
     delivery_estimate: {
       maximum: {
         unit: String,
@@ -32,6 +35,15 @@ const orderSchema = new mongoose.Schema({
         value: Number,
       },
     },
+    display_name: String,
+    fixed_amount: {
+      amount: Number,
+      currency: String,
+    },
+    livemode: Boolean,
+    metadata: {},
+    tax_behavior: String,
+    tax_code: {},
   },
   subTotal: Number,
   totalAmount: Number,
