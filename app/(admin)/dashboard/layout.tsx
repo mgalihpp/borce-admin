@@ -28,7 +28,7 @@ export default function RootLayout({
             <TopBar />
             <div className="flex-1">
               <QueryProvider>{children}</QueryProvider>
-              <Toaster position="top-center" />
+              <Toaster position="top-center" richColors />
             </div>
           </div>
         </body>

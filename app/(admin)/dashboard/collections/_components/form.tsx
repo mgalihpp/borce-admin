@@ -99,7 +99,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
       ) : (
         <p className="text-heading2-bold">Create Collection</p>
       )}
-      <Separator className="mb-7 mt-4 bg-grey-1" />
+      <Separator className="mb-7 mt-4" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
           <FormField

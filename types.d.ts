@@ -44,7 +44,7 @@ type CustomerType = {
 };
 
 type UserType = {
-  clerkId: string;
+  customerId: string;
   wishlist: [string];
   createdAt: string;
   updatedAt: string;
@@ -100,6 +100,15 @@ type OrderType = {
   totalAmount: number;
   paymentMethod: string[];
   createdAt: Date;
+};
+
+type CouponType = {
+  _id: string;
+  code: string;
+  description: string;
+  listUser: [UserType];
+  isLimit: boolean | string;
+  limit?: number | undefined;
 };
 
 interface CartItem {

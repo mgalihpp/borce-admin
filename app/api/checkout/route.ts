@@ -1,10 +1,11 @@
 import { stripe } from "@/lib/stripe";
 import { NextRequest, NextResponse } from "next/server";
 
+type CheckoutRequest = { cartItems: CartItem[]; customer: any; coupon: string };
+
 export async function POST(req: NextRequest) {
   try {
-    const { cartItems, customer }: { cartItems: CartItem[]; customer: any } =
-      await req.json();
+    const { cartItems, customer, coupon }: CheckoutRequest = await req.json();
 
     if (!cartItems || !customer) {
       return NextResponse.json("Not enough data to checkout", { status: 400 });
@@ -12,6 +13,7 @@ export async function POST(req: NextRequest) {
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
+      allow_promotion_codes: true,
       mode: "payment",
       shipping_address_collection: {
         allowed_countries: ["ID"],
@@ -45,7 +47,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(session, { status: 201 });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 },

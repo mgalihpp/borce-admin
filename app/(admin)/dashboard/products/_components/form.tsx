@@ -52,15 +52,14 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
           label: title,
           value: _id,
         }))
-      : []
+      : [],
   );
 
   const { data: collections } = useQuery({
     queryKey: ["collections"],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<CollectionType[]>(
-        "/api/collections"
-      );
+      const { data } =
+        await axiosInstance.get<CollectionType[]>("/api/collections");
 
       return data;
     },
@@ -72,7 +71,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
       ? {
           ...initialData,
           collections: initialData.collections.map(
-            (collection) => collection._id
+            (collection) => collection._id,
           ),
         }
       : {
@@ -92,7 +91,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
   const handleKeyPress = (
     e:
       | React.KeyboardEvent<HTMLInputElement>
-      | React.KeyboardEvent<HTMLTextAreaElement>
+      | React.KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -104,7 +103,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
     mutationFn: async (data: z.infer<typeof formSchema>) => {
       const res = await axiosInstance.post(
         initialData ? `/api/products/${initialData._id}` : "/api/products",
-        data
+        data,
       );
 
       return res.data;
@@ -143,7 +142,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         <p className="text-heading2-bold">Create Product</p>
       )}
 
-      <Separator className="bg-grey-1 mt-4 mb-7" />
+      <Separator className="mb-7 mt-4" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
           <FormField
@@ -203,7 +202,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
             )}
           />
 
-          <div className="md:grid md:grid-cols-3 gap-8">
+          <div className="gap-8 md:grid md:grid-cols-3">
             <FormField
               control={form.control}
               name="price"
@@ -298,25 +297,25 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                         onChange={(newValue) => {
                           // Identify newly selected values
                           const newSelectedValues = newValue.filter(
-                            (option) => !selectedValues.includes(option)
+                            (option) => !selectedValues.includes(option),
                           );
 
                           // Identify deselected values
                           const deselectedValues = selectedValues.filter(
-                            (option) => !newValue.includes(option)
+                            (option) => !newValue.includes(option),
                           );
 
                           // Update the state with the newly selected values and remove any deselected values
                           setSelectedValues((prevSelectedValues) => [
                             ...prevSelectedValues.filter(
-                              (option) => !deselectedValues.includes(option)
+                              (option) => !deselectedValues.includes(option),
                             ),
                             ...newSelectedValues,
                           ]);
 
                           form.setValue(
                             "collections",
-                            newValue.map((option) => option.value)
+                            newValue.map((option) => option.value),
                           );
                         }}
                       />
@@ -342,7 +341,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                       onRemove={(colorToRemove) =>
                         field.onChange([
                           ...field.value.filter(
-                            (color) => color !== colorToRemove
+                            (color) => color !== colorToRemove,
                           ),
                         ])
                       }
@@ -368,7 +367,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                       onRemove={(sizeToRemove) =>
                         field.onChange([
                           ...field.value.filter(
-                            (size) => size !== sizeToRemove
+                            (size) => size !== sizeToRemove,
                           ),
                         ])
                       }

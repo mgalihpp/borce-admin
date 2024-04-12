@@ -38,7 +38,7 @@ export default function RootLayout({
               <Footer />
             </div>
           </QueryProvider>
-          <Toaster position="top-center" />
+          <Toaster position="top-center" richColors />
         </body>
       </html>
     </ClerkProvider>

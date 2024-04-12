@@ -5,7 +5,7 @@ import { DataTable } from "@/components/admin/data-table";
 import Loader from "@/components/loader";
 import { buttonVariants } from "@/components/ui/button";
 import axiosInstance from "@/lib/axios";
-import { Separator } from "@radix-ui/react-separator";
+import { Separator } from "@/components/ui/separator";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -37,7 +37,7 @@ const ProductPage = () => {
           New Product
         </Link>
       </div>
-      <Separator />
+      <Separator className="my-5" />
       <DataTable columns={columns} data={data} searchKey="title" />
     </div>
   );

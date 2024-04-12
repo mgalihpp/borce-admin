@@ -13,11 +13,15 @@ import Loader from "@/components/loader";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
 export default function CartPage() {
   const router = useRouter();
   const { user } = useUser();
-  const { cartItems, removeItem, editItem } = useCart();
+  const [coupon, setCoupon] = useState<string | null>(null);
+  const { cartItems, coupon: couponId, removeItem, editItem, addCoupon } = useCart();
 
   const total = cartItems.reduce(
     (acc, item) => acc + item.item.price * item.quantity,
@@ -38,6 +42,7 @@ export default function CartPage() {
       const { data } = await axiosInstance.post("/api/checkout", {
         cartItems,
         customer,
+        couponId,
       });
 
       return data;
@@ -192,6 +197,35 @@ export default function CartPage() {
           <div className="flex items-center justify-between">
             <p className="text-small-normal">Total</p>
             <p className="text-small-medium">${totalRounded}</p>
+          </div>
+          <Separator />
+          <div className="flex flex-col">
+            <div className="space-y-2">
+              <Label htmlFor="coupon">Coupon</Label>
+              <div className="flex items-center gap-2 max-sm:flex-col">
+                <Input
+                  id="coupon"
+                  name="coupon"
+                  placeholder="Enter coupons (optional)"
+                  autoComplete="false"
+                  className="focus-visible:ring-1"
+                  onChange={(e) => {
+                    setCoupon(e.target.value);
+                  }}
+                  value={coupon as string}
+                />
+                <Button
+                  variant="outline"
+                  type="button"
+                  disabled={!coupon}
+                  onClick={() => {
+                    addCoupon(coupon as string);
+                  }}
+                >
+                  Redeem
+                </Button>
+              </div>
+            </div>
           </div>
 
           <Button type="button" onClick={handleCheckout} disabled={isPending}>

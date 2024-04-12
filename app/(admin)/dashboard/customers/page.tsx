@@ -19,7 +19,7 @@ export default async function CutomerPage() {
     <div className="px-10 py-5">
       <p className="text-heading2-bold">Customers</p>
 
-      <Separator className="bg-grey-1 my-5" />
+      <Separator className="my-5" />
       <DataTable columns={columns} data={customers} searchKey="name" />
     </div>
   );

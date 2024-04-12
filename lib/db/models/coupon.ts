@@ -6,12 +6,9 @@ const couponSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  listUser: [
-    {
-      user: mongoose.Types.ObjectId,
-      ref: "User",
-    },
-  ],
+  listUsers: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  },
   isLimit: {
     type: Boolean,
     required: false,

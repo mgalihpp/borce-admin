@@ -3,10 +3,17 @@ import {
   Shapes,
   ShoppingBag,
   Tag,
+  Ticket,
   UsersRound,
 } from "lucide-react";
 
-export const navLinks = [
+type NavigationLinks = {
+  url: string;
+  icon: JSX.Element;
+  label: string;
+};
+
+export const navLinks: NavigationLinks[] = [
   {
     url: "/dashboard",
     icon: <LayoutDashboard />,
@@ -23,15 +30,20 @@ export const navLinks = [
     label: "Products",
   },
   {
+    url: "/dashboard/customers",
+    icon: <UsersRound />,
+    label: "Customers",
+  },
+  {
     url: "/dashboard/orders",
     icon: <ShoppingBag />,
     label: "Orders",
   },
   {
-    url: "/dashboard/customers",
-    icon: <UsersRound />,
-    label: "Customers",
-  },
+    url: '/dashboard/coupons',
+    icon: <Ticket />,
+    label: 'Coupons'
+  }
 ];
 
 export const SORT_OPTIONS = [
