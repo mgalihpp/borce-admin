@@ -20,10 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>
-          <div className="flex max-lg:flex-col text-grey-1">
+    <html lang="en">
+      <body className={inter.className}>
+        <ClerkProvider>
+          <div className="flex text-grey-1 max-lg:flex-col">
             <Sidebar />
             <TopBar />
             <div className="flex-1">
@@ -31,8 +31,8 @@ export default function RootLayout({
               <Toaster position="top-center" richColors />
             </div>
           </div>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }

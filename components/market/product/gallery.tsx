@@ -15,7 +15,7 @@ const Gallery = ({
   return (
     <div className="flex w-full flex-col items-start gap-8">
       <div className="flex max-w-[500px] flex-col-reverse gap-3 lg:flex-row">
-        <div className="tailwind-scrollbar-hide flex max-md:max-w-sm gap-2 overflow-auto lg:flex-col">
+        <div className="tailwind-scrollbar-hide flex max-md:max-w-xs gap-2 overflow-auto lg:flex-col">
           {media.map((image, index) => (
             <NextImage
               src={image}
@@ -37,7 +37,7 @@ const Gallery = ({
           height={500}
           quality={100}
           alt="product image"
-          className="h-96 w-96 rounded-lg object-contain shadow-xl"
+          className="w-96 h-96 rounded-lg object-contain shadow-xl"
         />
       </div>
 

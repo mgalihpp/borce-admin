@@ -28,9 +28,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={poppins.className}>
+    <html lang="en">
+      <body className={poppins.className}>
+        <ClerkProvider>
           <Navbar />
           <QueryProvider>
             <div className="mx-auto mt-[68px] flex max-w-7xl flex-col items-center justify-center">
@@ -39,8 +39,8 @@ export default function RootLayout({
             </div>
           </QueryProvider>
           <Toaster position="top-center" richColors />
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
